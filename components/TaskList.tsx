@@ -103,7 +103,7 @@ export default function TaskList(props: TaskListProps) {
 
       <div className="mt-8">
         <button
-          className="border-2 border-red-500 p-2 text-red-500"
+          className="p-2 btn btn-outline btn-accent"
           onClick={clearCompleted}
         >
           Clear Completed Task

@@ -11,12 +11,9 @@ export type TaskItemProps = {
 
 function RemoveButton(props: JSX.IntrinsicElements["button"]) {
   return (
-    <button
-      className="flex text-red-500 border-2 border-red-500 p-2 rounded-lg"
-      {...props}
-    >
+    <button className="flex p-2 btn btn-outline btn-secondary" {...props}>
       <svg
-        className="h-6 w-6 text-red-500"
+        className="h-6 w-6 text-secondary"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -43,8 +40,7 @@ export default function TaskItem({ task, onRemove, onToggle }: TaskItemProps) {
         <div className="p-2">
           <input
             type="checkbox"
-            className="h-6 w-6 "
-            value="true"
+            className="checkbox"
             onChange={onToggle}
             checked={task.completed}
           />

@@ -30,19 +30,27 @@ export default function AddTaskForm({ onAdd }: AddTaskFormProps) {
     });
   };
 
-  // console.log({ isSubmitting, errors });
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mt-4 flex">
-        <input
-          className="w-80 border-b-2 border-gray-500 text-black"
-          placeholder="Enter your task here"
-          {...register("title")}
-        />
+        <div className="form-control w-full max-w-xs">
+          <input
+            type="text"
+            placeholder="Enter your task here"
+            className="input input-bordered input-primary w-80"
+            {...register("title")}
+          />
+          {errors.title && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.title.message}
+              </span>
+            </label>
+          )}
+        </div>
         <button
           type="submit"
-          className="ml-2 border-2 border-green-500 p-2 text-green-500 hover:text-white hover:bg-green-500 rounded-lg flex"
+          className="btn btn-primary ml-2 p-2 flex"
           disabled={isSubmitting}
         >
           <svg
