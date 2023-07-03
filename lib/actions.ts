@@ -14,6 +14,7 @@ export async function addTask(
   try {
     await prisma.task.create({ data: task });
   } catch (e) {
+    revalidatePath("/");
     logger.error(e, "Failed to create new task");
     return err({ message: "Failed to create new task" });
   }
@@ -29,6 +30,7 @@ export async function deleteTask({
   try {
     await prisma.task.delete({ where: { id } });
   } catch (e) {
+    revalidatePath("/");
     logger.error(e, "Failed to delete task");
     return err({ message: "Failed to delete task" });
   }
@@ -45,6 +47,7 @@ export async function updateTask({
   try {
     await prisma.task.update({ where: { id }, data: { completed } });
   } catch (e) {
+    revalidatePath("/");
     logger.error(e, "Failed to toggle task");
     return err({ message: "Failed to toggle task" });
   }
@@ -58,6 +61,7 @@ export async function clearCompletedTasks(): Promise<
   try {
     await prisma.task.deleteMany({ where: { completed: true } });
   } catch (e) {
+    revalidatePath("/");
     logger.error(e, "Failed to clear completed tasks");
     return err({ message: "Failed to clear completed tasks" });
   }
