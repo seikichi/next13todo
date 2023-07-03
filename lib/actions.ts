@@ -14,7 +14,6 @@ export async function addTask(
   try {
     await prisma.task.create({ data: task });
   } catch (e) {
-    // NOTE: Use pino
     logger.error(e, "Failed to create new task");
     return err({ message: "Failed to create new task" });
   }
@@ -22,7 +21,9 @@ export async function addTask(
   return ok({});
 }
 
-export async function deleteTask({ id }: Pick<Task, "id">) {
+export async function deleteTask({
+  id,
+}: Pick<Task, "id">): Promise<Result<{}, { message: string }>> {
   logger.info({ message: "deleteTask", task: { id } });
 
   try {
@@ -35,6 +36,31 @@ export async function deleteTask({ id }: Pick<Task, "id">) {
   return ok({});
 }
 
-export async function sayHello() {
-  logger.info("Hello, world! (from sayHello)");
+export async function updateTask({
+  id,
+  completed,
+}: Pick<Task, "id" | "completed">): Promise<Result<{}, { message: string }>> {
+  logger.info({ message: "toggleTask", task: { id } });
+
+  try {
+    await prisma.task.update({ where: { id }, data: { completed } });
+  } catch (e) {
+    logger.error(e, "Failed to toggle task");
+    return err({ message: "Failed to toggle task" });
+  }
+  revalidatePath("/");
+  return ok({});
+}
+
+export async function clearCompletedTasks(): Promise<
+  Result<{}, { message: string }>
+> {
+  try {
+    await prisma.task.deleteMany({ where: { completed: true } });
+  } catch (e) {
+    logger.error(e, "Failed to clear completed tasks");
+    return err({ message: "Failed to clear completed tasks" });
+  }
+  revalidatePath("/");
+  return ok({});
 }

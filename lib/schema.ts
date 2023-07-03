@@ -2,7 +2,7 @@ import z from "zod";
 
 export const Task = z
   .object({
-    id: z.number().positive(),
+    id: z.number(),
     title: z.string().min(1),
     completed: z.boolean(),
   })

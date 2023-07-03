@@ -1,11 +1,12 @@
 "use client";
 
-import { deleteTask, sayHello } from "@/lib/actions";
 import { Task } from "@/lib/schema";
-import { startTransition, useCallback } from "react";
+import { useCallback } from "react";
 
 export type TaskItemProps = {
   task: Task;
+  onRemove: () => void;
+  onToggle: () => void;
 };
 
 function RemoveButton(props: JSX.IntrinsicElements["button"]) {
@@ -31,17 +32,7 @@ function RemoveButton(props: JSX.IntrinsicElements["button"]) {
   );
 }
 
-export default function TaskItem({ task }: TaskItemProps) {
-  const handleRemove = useCallback(() => {
-    startTransition(() => {
-      (async () => {
-        await deleteTask({ id: task.id });
-      })();
-    });
-  }, [task.id]);
-
-  const toggleCheck = useCallback(() => {}, []);
-
+export default function TaskItem({ task, onRemove, onToggle }: TaskItemProps) {
   const titleClass = task.completed
     ? "text-lg line-through text-gray-400"
     : "text-lg text-black";
@@ -54,14 +45,14 @@ export default function TaskItem({ task }: TaskItemProps) {
             type="checkbox"
             className="h-6 w-6 "
             value="true"
-            onChange={toggleCheck}
+            onChange={onToggle}
             checked={task.completed}
           />
         </div>
         <div className="p-2">
           <p className={titleClass}>{task.title}</p>
         </div>
-        <RemoveButton onClick={handleRemove} />
+        <RemoveButton onClick={onRemove} />
       </div>
       <hr className="mt-2" />
     </>

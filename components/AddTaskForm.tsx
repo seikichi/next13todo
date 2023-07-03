@@ -1,12 +1,15 @@
 "use client";
 
-import { addTask } from "@/lib/actions";
 import { NewTask } from "@/lib/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { startTransition } from "react";
 
-export default function AddTaskForm() {
+type AddTaskFormProps = {
+  onAdd: (task: NewTask) => Promise<void>;
+};
+
+export default function AddTaskForm({ onAdd }: AddTaskFormProps) {
   const {
     register,
     handleSubmit,
@@ -21,8 +24,8 @@ export default function AddTaskForm() {
   const onSubmit = async (task: NewTask) => {
     startTransition(() => {
       (async () => {
-        await addTask(task);
         reset();
+        await onAdd(task);
       })();
     });
   };
