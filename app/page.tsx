@@ -4,13 +4,14 @@ import AddTaskForm from "@/components/AddTaskForm";
 import ClearButton from "@/components/ClearButton";
 import ResetButton from "@/components/ResetButton";
 import { prisma } from "@/lib/db";
+import logger from "@/lib/logger";
 
 export const revalidate = 0;
 
 export default async function Page() {
   const dbTasks = await prisma.task.findMany();
   const tasks = dbTasks.map((t) => Task.parse(t));
-  console.log(tasks);
+  logger.info({ dbTasks });
 
   // const tasks = [
   //   Task.parse({ id: 1, title: "Cook maggie", completed: true }),

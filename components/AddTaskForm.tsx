@@ -27,7 +27,7 @@ export default function AddTaskForm() {
     });
   };
 
-  console.log({ isSubmitting, errors });
+  // console.log({ isSubmitting, errors });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
